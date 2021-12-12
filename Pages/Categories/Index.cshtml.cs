@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ionascu_Adrian_Lab8.Data;
 using Ionascu_Adrian_Lab8.Models;
 
-namespace Ionascu_Adrian_Lab8.Pages.Publishers
+namespace Ionascu_Adrian_Lab8.Pages.Categories
 {
     public class IndexModel : PageModel
     {
@@ -19,15 +19,13 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
             _context = context;
         }
 
-        public IList<Publisher> Publisher { get;set; }
-        public IList<Book> Book { get; set; }
+        public IList<BookCategory> BookCategory { get;set; }
 
         public async Task OnGetAsync()
         {
-             Book = await _context.Book
-            .Include(b => b.Publisher)
-            .ToListAsync();
-            Publisher = await _context.Publisher.ToListAsync();
+            BookCategory = await _context.BookCategory
+                .Include(b => b.Book)
+                .Include(b => b.Category).ToListAsync();
         }
     }
 }

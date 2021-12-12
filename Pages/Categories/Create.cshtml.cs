@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Ionascu_Adrian_Lab8.Data;
 using Ionascu_Adrian_Lab8.Models;
 
-namespace Ionascu_Adrian_Lab8.Pages.Publishers
+namespace Ionascu_Adrian_Lab8.Pages.Categories
 {
     public class CreateModel : PageModel
     {
@@ -21,13 +21,13 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
 
         public IActionResult OnGet()
         {
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
-
+        ViewData["BookID"] = new SelectList(_context.Book, "ID", "ID");
+        ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "ID", "ID");
             return Page();
         }
 
         [BindProperty]
-        public Publisher Publisher { get; set; }
+        public BookCategory BookCategory { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -37,7 +37,7 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
                 return Page();
             }
 
-            _context.Publisher.Add(Publisher);
+            _context.BookCategory.Add(BookCategory);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

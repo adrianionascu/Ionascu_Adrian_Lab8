@@ -17,5 +17,7 @@ namespace Ionascu_Adrian_Lab8.Data
         public DbSet<Ionascu_Adrian_Lab8.Models.Book> Book { get; set; }
 
         public DbSet<Ionascu_Adrian_Lab8.Models.Publisher> Publisher { get; set; }
+
+        public DbSet<Ionascu_Adrian_Lab8.Models.BookCategory> BookCategory { get; set; }
     }
 }

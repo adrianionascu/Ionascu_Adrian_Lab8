@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Ionascu_Adrian_Lab8.Data;
 using Ionascu_Adrian_Lab8.Models;
 
-namespace Ionascu_Adrian_Lab8.Pages.Publishers
+namespace Ionascu_Adrian_Lab8.Pages.Categories
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
         }
 
         [BindProperty]
-        public Publisher Publisher { get; set; }
+        public BookCategory BookCategory { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,13 +30,16 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
                 return NotFound();
             }
 
-            Publisher = await _context.Publisher.FirstOrDefaultAsync(m => m.ID == id);
+            BookCategory = await _context.BookCategory
+                .Include(b => b.Book)
+                .Include(b => b.Category).FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Publisher == null)
+            if (BookCategory == null)
             {
                 return NotFound();
             }
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+           ViewData["BookID"] = new SelectList(_context.Book, "ID", "ID");
+           ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "ID", "ID");
             return Page();
         }
 
@@ -49,7 +52,7 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
                 return Page();
             }
 
-            _context.Attach(Publisher).State = EntityState.Modified;
+            _context.Attach(BookCategory).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +60,7 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PublisherExists(Publisher.ID))
+                if (!BookCategoryExists(BookCategory.ID))
                 {
                     return NotFound();
                 }
@@ -70,9 +73,9 @@ namespace Ionascu_Adrian_Lab8.Pages.Publishers
             return RedirectToPage("./Index");
         }
 
-        private bool PublisherExists(int id)
+        private bool BookCategoryExists(int id)
         {
-            return _context.Publisher.Any(e => e.ID == id);
+            return _context.BookCategory.Any(e => e.ID == id);
         }
     }
 }
